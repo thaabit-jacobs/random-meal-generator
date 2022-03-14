@@ -6,9 +6,14 @@
     box-sizing: border-box;
 }
 
+li {
+  list-style: none;
+}
+
 body {
     font-family: 'Roboto', sans-serif;
     margin: 2rem 15rem;
+    
 }
 
 main{
@@ -37,6 +42,7 @@ button{
   background: #33C3F0;
   padding: 0.5rem 1.25rem;
   margin-bottom: 1rem;
+  cursor: pointer;
 }
 
 .meal-instructions {

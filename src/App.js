@@ -9,9 +9,11 @@ class App extends React.Component {
     this.state = {
       meal: {}
     }
+
+    this.handleOnClick = this.handleOnClick.bind(this);
   }
 
-  componentDidMount() {
+  fetchRandomMeal() {
     fetch('https://www.themealdb.com/api/json/v1/1/random.php')
     .then(response => response.json())
     .then((data) => {
@@ -23,23 +25,18 @@ class App extends React.Component {
     })
   }
 
-  getAllIngredients() {
-      let mealObj = this.state.meal;
-      return Object.keys(mealObj)
-                           .filter(mealItem => 
-                              mealItem.indexOf("strIngredient") !== -1 && mealObj[mealItem])
-                           .map(filteredKey => mealObj[filteredKey]);
-
-
+  componentDidMount() {
+    this.fetchRandomMeal()
   }
 
-  insertEmbedIntoVid() {
-    let url = this.state.meal["strYoutube"];
-    let template = "https://www.youtube.com/embed/";
+  handleOnClick() {
+    this.fetchRandomMeal()
+  }
 
-    console.log(url.substring(0, url.substring(url.indexOf("="))));
-
-    return url;
+  getAllIngredients(){
+    return Object.keys(this.state.meal)
+                 .filter(objKey => objKey.indexOf("strIngredient") !== -1 && this.state.meal[objKey] !== "")
+                 .map(filteredKeys => this.state.meal[filteredKeys])
   }
 
   render() {
@@ -47,7 +44,7 @@ class App extends React.Component {
       <main>
         <h1 className="bold">Feeling Hungry</h1>
         <p className="bold">Get a random meal by clicking below!</p>
-        <button>GET MEAL</button>
+        <button onClick={this.handleOnClick}>GET MEAL</button>
   
         <section className='meal-instructions'>
           <img src={this.state.meal["strMealThumb"]}/>
@@ -69,12 +66,6 @@ class App extends React.Component {
               this.getAllIngredients().map(ingredient => <li key={ingredient}>{ingredient}</li>)
             }
           </ul>
-        </section>
-
-        <section className='meal-video'>
-          <iframe width="420" height="315"
-            src={this.insertEmbedIntoVid()}>
-          </iframe>
         </section>
       </main>
     );
